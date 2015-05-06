@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
@@ -117,10 +118,15 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     }
 
     public List<NavigationItem> getMenu() {
+        TypedArray drawerList =  getResources().obtainTypedArray(R.array.drawer_list);
+        TypedArray drawerIcon =  getResources().obtainTypedArray(R.array.drawer_icon);
+
         List<NavigationItem> items = new ArrayList<NavigationItem>();
-        items.add(new NavigationItem("item 1", getResources().getDrawable(R.drawable.ic_menu_check)));
-        items.add(new NavigationItem("item 2", getResources().getDrawable(R.drawable.ic_menu_check)));
-        items.add(new NavigationItem("item 3", getResources().getDrawable(R.drawable.ic_menu_check)));
+        items.add(new NavigationItem(drawerList.getString(0), drawerIcon.getDrawable(0)));
+        items.add(new NavigationItem(drawerList.getString(1), drawerIcon.getDrawable(1)));
+        items.add(new NavigationItem(drawerList.getString(2), drawerIcon.getDrawable(2)));
+        items.add(new NavigationItem(drawerList.getString(3), drawerIcon.getDrawable(3)));
+        items.add(new NavigationItem(drawerList.getString(4), drawerIcon.getDrawable(4)));
         return items;
     }
 
