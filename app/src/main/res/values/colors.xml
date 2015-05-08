@@ -18,4 +18,18 @@
 
     <drawable name="pressed_gray">#0c000000</drawable>
     <drawable name="selected_gray">#2c000000</drawable>
+
+    <color name="selectableItemBackground">#2cFF9800</color>
+
+    <color name="transparent">#00FFFFFF</color>
+
+    <color name="free_place">#3F51B5</color>
+    <color name="free_pace_pressed">#5C6BC0</color>
+    <color name="my_place">#4CAF50</color>
+    <color name="my_place_pressed">#66BB6A</color>
+    <color name="police">#FF5722</color>
+    <color name="police_pressed">#FF7043</color>
+    <color name="police_seen">#F44336</color>
+    <color name="police_seen_pressed">#EF5350</color>
+    <color name="police_bg">#66F44336</color>
 </resources>

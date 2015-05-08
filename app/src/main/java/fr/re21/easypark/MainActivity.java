@@ -1,27 +1,53 @@
 package fr.re21.easypark;
 
+
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+
+import fr.re21.easypark.fragments.FreePlaceFragment;
+import fr.re21.easypark.fragments.HomeFragment;
+import fr.re21.easypark.fragments.MyPlaceFragment;
+import fr.re21.easypark.fragments.PoliceFragment;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerCallbacks {
+        implements NavigationDrawerCallbacks, View.OnClickListener {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private Toolbar mToolbar;
+    private ArrayList<Fragment> fragmentList;
+    private int fragmentPos;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        fragmentList = new ArrayList<>();
+        fragmentList.add(new HomeFragment());
+        fragmentList.add(new FreePlaceFragment());
+        fragmentList.add(new MyPlaceFragment());
+        fragmentList.add(new PoliceFragment());
+        fragmentPos=-1;
+
         setContentView(R.layout.activity_main);
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
@@ -33,25 +59,52 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
         // populate the navigation drawer
         mNavigationDrawerFragment.setUserData("John Doe", "johndoe@doe.com", BitmapFactory.decodeResource(getResources(), R.drawable.avatar));
+
+
+
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        // update the main content by replacing fragments
-        Toast.makeText(this, "Menu item selected -> " + position, Toast.LENGTH_SHORT).show();
+        changeFragment(position);
     }
 
 
     @Override
     public void onBackPressed() {
-        if (mNavigationDrawerFragment.isDrawerOpen())
+        if (mNavigationDrawerFragment.isDrawerOpen()){
             mNavigationDrawerFragment.closeDrawer();
-        else
-            super.onBackPressed();
+        } else {
+            if(fragmentPos==0){
+                super.onBackPressed();
+            } else {
+                changeFragment(0);
+            }
+        }
+
+    }
+
+    @Override
+    public void onClick(View v) {
+
+
+
+
+    }
+
+    public void changeFragment(int position){
+        if(fragmentPos!=position){
+            FragmentManager manager = getSupportFragmentManager();
+            FragmentTransaction transaction = manager.beginTransaction();
+            transaction.setCustomAnimations(R.animator.slide_in, R.animator.slide_out);
+            transaction.replace(R.id.container, fragmentList.get(position));
+            transaction.commit();
+            fragmentPos=position;
+        }
     }
 
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
             // Only show items in the action bar relevant to this screen
@@ -77,7 +130,7 @@ public class MainActivity extends ActionBarActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
 
 }

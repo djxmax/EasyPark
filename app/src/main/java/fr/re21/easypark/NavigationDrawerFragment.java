@@ -126,7 +126,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         items.add(new NavigationItem(drawerList.getString(1), drawerIcon.getDrawable(1)));
         items.add(new NavigationItem(drawerList.getString(2), drawerIcon.getDrawable(2)));
         items.add(new NavigationItem(drawerList.getString(3), drawerIcon.getDrawable(3)));
-        items.add(new NavigationItem(drawerList.getString(4), drawerIcon.getDrawable(4)));
         return items;
     }
 

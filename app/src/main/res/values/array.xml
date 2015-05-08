@@ -5,7 +5,7 @@
         <item>Carte</item>
         <item>Ma Place</item>
         <item>Force de l\'ordre</item>
-        <item>Paramètre</item>
+        <item>Paramètres</item>
     </string-array>
 
     <integer-array name="drawer_icon">
