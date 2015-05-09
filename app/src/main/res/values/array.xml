@@ -9,10 +9,10 @@
     </string-array>
 
     <integer-array name="drawer_icon">
-        <item>@drawable/ic_home_grey600_48dp</item>
-        <item>@drawable/ic_map_grey600_48dp</item>
-        <item>@drawable/ic_place_grey600_48dp</item>
-        <item>@drawable/ic_notifications_on_grey600_48dp</item>
+        <item>@drawable/ic_home_grey600_36dp</item>
+        <item>@drawable/ic_map_grey600_36dp</item>
+        <item>@drawable/ic_place_grey600_36dp</item>
+        <item>@drawable/ic_notifications_on_grey600_36dp</item>
         <item>@drawable/ic_settings_grey600_48dp</item>
     </integer-array>
 </resources>

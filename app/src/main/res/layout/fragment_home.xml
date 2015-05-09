@@ -4,15 +4,35 @@
     android:layout_height="match_parent"
     android:padding="10dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/home_button_free_place"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical"
         android:background="@drawable/home_button_free_place_selector"
-        android:clickable="true"></LinearLayout>
-    <LinearLayout
+        android:clickable="true"
+        android:elevation="5dp">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_map_white_48dp"
+            android:layout_above="@+id/home_button_free_place_txt"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/home_button_free_place_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/fragment_free_place"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            style="@style/home_text"/>
+
+    </RelativeLayout>
+    <RelativeLayout
         android:id="@+id/home_button_my_place"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -20,23 +40,65 @@
         android:background="@drawable/home_button_my_place_selector"
         android:orientation="vertical"
         android:layout_marginTop="10dp"
-        android:clickable="true"></LinearLayout>
+        android:clickable="true"
+        android:elevation="5dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_place_white_48dp"
+            android:layout_above="@+id/home_button_my_place_txt"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/home_button_my_place_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/fragment_my_place"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            style="@style/home_text"/>
+    </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal"
         android:background="@color/police_bg"
-        android:layout_marginTop="10dp">
-        <LinearLayout
+        android:layout_marginTop="10dp"
+        android:elevation="5dp">
+        <RelativeLayout
             android:id="@+id/home_button_police"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="@drawable/home_button_police_selector"
-            android:clickable="true"></LinearLayout>
-        <LinearLayout
+            android:clickable="true"
+            android:elevation="5dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_notifications_on_white_48dp"
+                android:layout_above="@+id/home_button_police_txt"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
+                android:padding="10dp"
+                />
+            <TextView
+                android:id="@+id/home_button_police_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/fragment_police"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                style="@style/home_text"/>
+        </RelativeLayout>
+        <RelativeLayout
             android:id="@+id/home_button_police_seen"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -44,7 +106,28 @@
             android:background="@drawable/home_button_police_seen_selector"
             android:orientation="vertical"
             android:layout_marginLeft="10dp"
-            android:clickable="true"></LinearLayout>
+            android:clickable="true"
+            android:elevation="5dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_my_location_white_48dp"
+                android:layout_above="@+id/home_button_police_seen_txt"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
+                android:padding="10dp"
+                />
+            <TextView
+                android:id="@+id/home_button_police_seen_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/fragment_police_seen"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                style="@style/home_text"/>
+        </RelativeLayout>
     </LinearLayout>
 
 </LinearLayout>

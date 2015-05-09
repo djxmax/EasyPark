@@ -4,6 +4,9 @@
     <string name="drawer_close">Menu closed</string>
     <string name="action_settings">Settings</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fragment_home">Accueil</string>
+    <string name="fragment_free_place">Places Libre</string>
+    <string name="fragment_my_place">Ma place</string>
+    <string name="fragment_police">Force de l\'ordre</string>
+    <string name="fragment_police_seen">Je les ai vu !</string>
 </resources>

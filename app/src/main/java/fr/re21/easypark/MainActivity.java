@@ -9,13 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -92,6 +86,10 @@ public class MainActivity extends ActionBarActivity
 
     }
 
+    public void changeDrawerPosition(int position){
+        mNavigationDrawerFragment.setDrawerPosition(position);
+    }
+
     public void changeFragment(int position){
         if(fragmentPos!=position){
             FragmentManager manager = getSupportFragmentManager();
@@ -99,6 +97,16 @@ public class MainActivity extends ActionBarActivity
             transaction.setCustomAnimations(R.animator.slide_in, R.animator.slide_out);
             transaction.replace(R.id.container, fragmentList.get(position));
             transaction.commit();
+            if(position==0){
+                if(mToolbar!=null) mToolbar.setTitle(R.string.fragment_home);
+            } else if(position==1){
+                ((FreePlaceFragment) fragmentList.get(1)).setPlace();
+                if(mToolbar!=null) mToolbar.setTitle(R.string.fragment_free_place);
+            } else if(position==2){
+                if(mToolbar!=null) mToolbar.setTitle(R.string.fragment_my_place);
+            } else if(position==3){
+                if(mToolbar!=null) mToolbar.setTitle(R.string.fragment_police);
+            }
             fragmentPos=position;
         }
     }

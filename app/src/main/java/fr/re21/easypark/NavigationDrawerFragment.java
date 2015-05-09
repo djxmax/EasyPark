@@ -193,6 +193,10 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         ((NavigationDrawerAdapter) mDrawerList.getAdapter()).selectPosition(position);
     }
 
+    public void setDrawerPosition(int position){
+        ((NavigationDrawerAdapter) mDrawerList.getAdapter()).selectPosition(position);
+    }
+
     public void openDrawer() {
         mDrawerLayout.openDrawer(mFragmentContainerView);
     }
