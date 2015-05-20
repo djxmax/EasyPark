@@ -100,7 +100,6 @@ public class MainActivity extends ActionBarActivity
             if(position==0){
                 if(mToolbar!=null) mToolbar.setTitle(R.string.fragment_home);
             } else if(position==1){
-                //((FreePlaceFragment) fragmentList.get(1)).setPlace();
                 if(mToolbar!=null) mToolbar.setTitle(R.string.fragment_free_place);
             } else if(position==2){
                 if(mToolbar!=null) mToolbar.setTitle(R.string.fragment_my_place);

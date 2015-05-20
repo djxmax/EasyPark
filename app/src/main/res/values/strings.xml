@@ -9,4 +9,9 @@
     <string name="fragment_my_place">Ma place</string>
     <string name="fragment_police">Force de l\'ordre</string>
     <string name="fragment_police_seen">Je les ai vu !</string>
+
+    <string name="free_place_pay_hour">Horaire Payantes :</string>
+    <string name="free_place_pay_hour_week">Du lundi au samedi :</string>
+    <string name="free_place_pay_hour_sunday">Dimanche et jours feriés :</string>
+    <string name="free_place_private">Parking Privé</string>
 </resources>

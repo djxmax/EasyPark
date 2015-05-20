@@ -21,9 +21,10 @@ public class ClosedParking {
     public static final int GET=1;
     public static final String TYPE="closedParkingList";
 
-    private String id, name, adresse, city;
+    private String id, name, adresse, city, weekHour, sundayHour;
     private Double latitude, longitude;
     private int totalPlace, remainPlace, zipCode;
+    private boolean card, cash, coins, privatePark;
 
     public ClosedParking(){}
 
@@ -111,6 +112,54 @@ public class ClosedParking {
         this.zipCode = zipCode;
     }
 
+    public String getWeekHour() {
+        return weekHour;
+    }
+
+    public void setWeekHour(String weekHour) {
+        this.weekHour = weekHour;
+    }
+
+    public String getSundayHour() {
+        return sundayHour;
+    }
+
+    public void setSundayHour(String sundayHour) {
+        this.sundayHour = sundayHour;
+    }
+
+    public boolean isCard() {
+        return card;
+    }
+
+    public void setCard(boolean card) {
+        this.card = card;
+    }
+
+    public boolean isCash() {
+        return cash;
+    }
+
+    public void setCash(boolean cash) {
+        this.cash = cash;
+    }
+
+    public boolean isCoins() {
+        return coins;
+    }
+
+    public void setCoins(boolean coins) {
+        this.coins = coins;
+    }
+
+    public boolean isPrivatePark() {
+        return privatePark;
+    }
+
+    public void setPrivatePark(boolean privatePark) {
+        this.privatePark = privatePark;
+    }
+
     public static SyncData getCloseParkingList(ArrayList<ClosedParking> closedParkingList, ServerResponseInterface sri, Context context) {
         System.out.println("get close parking list");
         SyncData syncData = new SyncData(GET, closedParkingList, URLConfig.closedParkingURL, sri, context);
@@ -192,46 +241,85 @@ public class ClosedParking {
         }
     }
 
-    public static ClosedParking closedParkingJsonParse(JSONObject jsonUser)
+    public static ClosedParking closedParkingJsonParse(JSONObject jsonPark)
             throws JSONException {
         ClosedParking closedParking = new ClosedParking();
 
-        if(jsonUser.has("id")){
-            closedParking.setId(jsonUser.getString("id"));
+        if(jsonPark.has("id")){
+            closedParking.setId(jsonPark.getString("id"));
         }
 
-        if(jsonUser.has("nom")){
-            closedParking.setName(jsonUser.getString("nom"));
+        if(jsonPark.has("nom")){
+            closedParking.setName(jsonPark.getString("nom"));
         }
 
-        if (jsonUser.has("latitude")){
-            closedParking.setLatitude(jsonUser.getDouble("latitude"));
+        if (jsonPark.has("latitude")){
+            closedParking.setLatitude(jsonPark.getDouble("latitude"));
         }
 
-        if (jsonUser.has("longitude")) {
-            closedParking.setLongitude(jsonUser.getDouble("longitude"));
+        if (jsonPark.has("longitude")) {
+            closedParking.setLongitude(jsonPark.getDouble("longitude"));
         }
 
-        if (jsonUser.has("places_total")) {
-            closedParking.setTotalPlace(jsonUser.getInt("places_total"));
+        if (jsonPark.has("places_total")) {
+            closedParking.setTotalPlace(jsonPark.getInt("places_total"));
         }
 
-        if(jsonUser.has("places_restantes")) {
-            closedParking.setRemainPlace(jsonUser.getInt("places_restantes"));
+        if(jsonPark.has("places_restantes")) {
+            closedParking.setRemainPlace(jsonPark.getInt("places_restantes"));
         }
 
-        if(jsonUser.has("adresse")) {
-            closedParking.setAdresse(jsonUser.getString("adresse"));
+        if(jsonPark.has("adresse")) {
+            closedParking.setAdresse(jsonPark.getString("adresse"));
         }
 
-        if(jsonUser.has("code_postal")) {
-            closedParking.setZipCode(jsonUser.getInt("code_postal"));
+        if(jsonPark.has("code_postal")) {
+            closedParking.setZipCode(jsonPark.getInt("code_postal"));
         }
 
-        if(jsonUser.has("ville")) {
-            closedParking.setCity(jsonUser.getString("ville"));
+        if(jsonPark.has("ville")) {
+            closedParking.setCity(jsonPark.getString("ville"));
         }
 
+        if(jsonPark.has("horaire_payant_semaine")) {
+            closedParking.setWeekHour(jsonPark.getString("horaire_payant_semaine"));
+        }
+
+        if(jsonPark.has("horaire_payant_dimanche")) {
+            closedParking.setSundayHour(jsonPark.getString("horaire_payant_dimanche"));
+        }
+
+        if(jsonPark.has("carte_bancaire")) {
+            if (jsonPark.getInt("carte_bancaire") == 1){
+                closedParking.setCard(true);
+            } else {
+                closedParking.setCard(false);
+            }
+        }
+
+        if(jsonPark.has("billets")) {
+            if (jsonPark.getInt("billets") == 1){
+                closedParking.setCash(true);
+            } else {
+                closedParking.setCash(false);
+            }
+        }
+
+        if(jsonPark.has("pieces")) {
+            if (jsonPark.getInt("pieces") == 1){
+                closedParking.setCoins(true);
+            } else {
+                closedParking.setCoins(false);
+            }
+        }
+
+        if(jsonPark.has("prive")) {
+            if (jsonPark.getInt("prive") == 1){
+                closedParking.setPrivatePark(true);
+            } else {
+                closedParking.setPrivatePark(false);
+            }
+        }
         return closedParking;
     }
 

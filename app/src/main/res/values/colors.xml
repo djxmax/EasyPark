@@ -32,4 +32,7 @@
     <color name="police_seen">#F44336</color>
     <color name="police_seen_pressed">#EF5350</color>
     <color name="police_bg">#66F44336</color>
+
+    <color name="closed_parking_dark">#3F51B5</color>
+    <color name="closed_parking_light">#7986CB</color>
 </resources>
