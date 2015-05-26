@@ -46,7 +46,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             ((MainActivity) getActivity()).changeFragment(3);
             ((MainActivity) getActivity()).changeDrawerPosition(3);
         } else if(v.equals(policeSeen)){
-
+            ((MainActivity) getActivity()).policeSeenDialog();
         }
     }
 }

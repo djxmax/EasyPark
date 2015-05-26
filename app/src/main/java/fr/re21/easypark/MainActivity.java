@@ -11,6 +11,16 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 import fr.re21.easypark.fragments.FreePlaceFragment;
@@ -20,7 +30,7 @@ import fr.re21.easypark.fragments.PoliceFragment;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerCallbacks, View.OnClickListener {
+        implements NavigationDrawerCallbacks, View.OnClickListener, OnMapReadyCallback {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -30,6 +40,10 @@ public class MainActivity extends ActionBarActivity
     private ArrayList<Fragment> fragmentList;
     private int fragmentPos;
 
+    private SupportMapFragment map;
+    private GoogleMap googleMap;
+
+    private final double lat=48.29881172611295, lng=4.0776872634887695;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +72,22 @@ public class MainActivity extends ActionBarActivity
 
     }
 
+    public void policeSeenDialog(){
+        MaterialDialog mt = new MaterialDialog.Builder(this)
+                .title("Je les ai vu !")
+                .customView(R.layout.dialog_layout, false)
+                .positiveText("OK")
+                .negativeText("Annuler")
+                .positiveColorRes(R.color.myPrimaryColor)
+                .negativeColorRes(R.color.myPrimaryColor)
+                .show();
+
+        View truc =  mt.getCustomView();
+        map = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.police_seen_map);
+        map.getMapAsync(this);
+    }
+
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         changeFragment(position);
@@ -73,6 +103,7 @@ public class MainActivity extends ActionBarActivity
                 super.onBackPressed();
             } else {
                 changeFragment(0);
+                mNavigationDrawerFragment.setDrawerPosition(0);
             }
         }
 
@@ -108,6 +139,25 @@ public class MainActivity extends ActionBarActivity
             }
             fragmentPos=position;
         }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.googleMap=googleMap;
+        googleMap.setMyLocationEnabled(true);
+        googleMap.getUiSettings().setMapToolbarEnabled(false);
+        googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(
+                new LatLng(lat, lng)).zoom(16).build();
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        CircleOptions circleOptions = new CircleOptions()
+                .center(new LatLng(lat, lng))   //set center
+                .radius(50)   //set radius in meters
+                .fillColor(getResources().getColor(R.color.circle_solid))  //default
+                .strokeColor(getResources().getColor(R.color.circle_stroke))
+                .strokeWidth(5);
+        googleMap.addCircle(circleOptions);
     }
 
 

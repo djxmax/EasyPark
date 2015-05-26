@@ -16,8 +16,8 @@
     <color name="myTextPrimaryColor">#212121</color>
     <color name="myNavigationColor">#000</color>
 
-    <drawable name="pressed_gray">#0c000000</drawable>
-    <drawable name="selected_gray">#2c000000</drawable>
+    <drawable name="pressed_gray">#0cFF9800</drawable>
+    <drawable name="selected_gray">#2cFF9800</drawable>
 
     <color name="selectableItemBackground">#2cFF9800</color>
 
@@ -35,4 +35,17 @@
 
     <color name="closed_parking_dark">#3F51B5</color>
     <color name="closed_parking_light">#7986CB</color>
+    <color name="minute_stop_dark">#009688</color>
+    <color name="minute_stop_light">#4DB6AC</color>
+
+
+
+    <color name="circle_stroke">#BB2196F3</color>
+    <color name="circle_solid">#9990CAF9</color>
+
+    <color name="circle_stroke2">#882196F3</color>
+    <color name="circle_solid2">#6690CAF9</color>
+
+    <color name="circle_stroke3">#552196F3</color>
+    <color name="circle_solid3">#3390CAF9</color>
 </resources>

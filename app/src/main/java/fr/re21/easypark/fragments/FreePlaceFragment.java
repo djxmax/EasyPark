@@ -1,5 +1,7 @@
 package fr.re21.easypark.fragments;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -48,6 +50,10 @@ public class FreePlaceFragment extends Fragment implements OnMapReadyCallback, S
     private TextView slidingTitle, slidingPlace, slidingAddr, slidingHourWeek, slidingHourSunday, privateParking;
     private FloatingActionButton slidingFab, positionFab;
     private ImageView cardPay, cashPay, coinsPay;
+    private ClosedParking closedParking;
+
+
+    private final double lat=48.29881172611295, lng=4.0776872634887695;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,6 +61,7 @@ public class FreePlaceFragment extends Fragment implements OnMapReadyCallback, S
         View view = inflater.inflate(R.layout.fragment_free_place,container, false);
 
         slidingPaneLayout = (SlidingUpPanelLayout) view.findViewById(R.id.free_place_sliding_layout);
+
         slidingContainer = (LinearLayout) view.findViewById(R.id.free_place_sliding_container);
         slidingTitle = (TextView) view.findViewById(R.id.free_place_sliding_title);
         slidingPlace = (TextView) view.findViewById(R.id.free_place_sliding_place);
@@ -109,7 +116,7 @@ public class FreePlaceFragment extends Fragment implements OnMapReadyCallback, S
         googleMap.getUiSettings().setMyLocationButtonEnabled(false);
 
         CameraPosition cameraPosition = new CameraPosition.Builder().target(
-                new LatLng(48.29881172611295, 4.0776872634887695)).zoom(8).build();
+                new LatLng(lat, lng)).zoom(8).build();
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         CameraUpdate zoom=CameraUpdateFactory.zoomTo(14);
         googleMap.animateCamera(zoom);
@@ -148,7 +155,7 @@ public class FreePlaceFragment extends Fragment implements OnMapReadyCallback, S
     @Override
     public boolean onMarkerClick(Marker marker) {
 
-        ClosedParking closedParking = null;
+        closedParking = null;
         for(ClosedParking parking : EntityList.closedParkingList){
             if(parking.getName().equals(marker.getTitle())){
                 closedParking=parking;
@@ -214,6 +221,13 @@ public class FreePlaceFragment extends Fragment implements OnMapReadyCallback, S
                     CameraUpdateFactory.newLatLng(new LatLng(lat,
                             lng));
             googleMap.animateCamera(center);
+        } else if(view.equals(slidingFab)){
+            if(closedParking!=null){
+                Uri gmmIntentUri = Uri.parse("google.navigation:q="+closedParking.getLatitude()+","+closedParking.getLongitude());
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
+            }
         }
 
     }
