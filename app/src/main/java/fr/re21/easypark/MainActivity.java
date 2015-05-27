@@ -42,6 +42,7 @@ public class MainActivity extends ActionBarActivity
 
     private SupportMapFragment map;
     private GoogleMap googleMap;
+    private MaterialDialog mt;
 
     private final double lat=48.29881172611295, lng=4.0776872634887695;
 
@@ -73,19 +74,24 @@ public class MainActivity extends ActionBarActivity
     }
 
     public void policeSeenDialog(){
-        MaterialDialog mt = new MaterialDialog.Builder(this)
-                .title("Je les ai vu !")
-                .customView(R.layout.dialog_layout, false)
-                .positiveText("OK")
-                .negativeText("Annuler")
-                .positiveColorRes(R.color.myPrimaryColor)
-                .negativeColorRes(R.color.myPrimaryColor)
-                .show();
+        if(mt==null) {
+            mt = new MaterialDialog.Builder(this)
+                    .title("Je les ai vu !")
+                    .customView(R.layout.dialog_layout, false)
+                    .positiveText("OK")
+                    .negativeText("Annuler")
+                    .positiveColorRes(R.color.myPrimaryColor)
+                    .negativeColorRes(R.color.myPrimaryColor)
+                    .show();
+        }else{
+            mt.show();
+        }
 
-        View truc =  mt.getCustomView();
-        map = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.police_seen_map);
-        map.getMapAsync(this);
+       if(map == null) {
+           map = (SupportMapFragment) getSupportFragmentManager()
+                   .findFragmentById(R.id.police_seen_map);
+           map.getMapAsync(this);
+       }
     }
 
     @Override
