@@ -67,7 +67,7 @@ public class MainActivity extends ActionBarActivity
         // Set up the drawer.
         mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
         // populate the navigation drawer
-        mNavigationDrawerFragment.setUserData("John Doe", "johndoe@doe.com", BitmapFactory.decodeResource(getResources(), R.drawable.avatar));
+        mNavigationDrawerFragment.setUserData("EasyPark", "", BitmapFactory.decodeResource(getResources(), R.drawable.avatar));
 
 
 
@@ -76,10 +76,10 @@ public class MainActivity extends ActionBarActivity
     public void policeSeenDialog(){
         if(mt==null) {
             mt = new MaterialDialog.Builder(this)
-                    .title("Je les ai vu !")
+                    .title(R.string.dialog_police_seen)
                     .customView(R.layout.dialog_layout, false)
-                    .positiveText("OK")
-                    .negativeText("Annuler")
+                    .positiveText(R.string.dialog_police_seen_YES)
+                    .negativeText(R.string.dialog_police_seen_NO)
                     .positiveColorRes(R.color.myPrimaryColor)
                     .negativeColorRes(R.color.myPrimaryColor)
                     .show();

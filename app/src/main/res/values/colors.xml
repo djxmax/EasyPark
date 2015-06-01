@@ -48,4 +48,6 @@
 
     <color name="circle_stroke3">#552196F3</color>
     <color name="circle_solid3">#3390CAF9</color>
+
+    <color name="myPrimaryColorTransparent">#77FF9800</color>
 </resources>

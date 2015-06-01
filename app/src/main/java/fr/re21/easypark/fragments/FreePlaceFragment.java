@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -37,6 +38,8 @@ import fr.re21.easypark.customInterface.ServerResponseInterface;
 import fr.re21.easypark.entity.ClosedParking;
 import fr.re21.easypark.entity.EntityList;
 
+import static android.view.View.VISIBLE;
+
 /**
  * Created by maxime on 08/05/15.
  */
@@ -47,6 +50,7 @@ public class FreePlaceFragment extends Fragment implements OnMapReadyCallback, S
     private SlidingUpPanelLayout slidingPaneLayout;
     private ArrayList<Marker> closedParkingMarkerList;
     private LinearLayout slidingContainer;
+    private RelativeLayout loadingContainer;
     private TextView slidingTitle, slidingPlace, slidingAddr, slidingHourWeek, slidingHourSunday, privateParking;
     private FloatingActionButton slidingFab, positionFab;
     private ImageView cardPay, cashPay, coinsPay;
@@ -78,11 +82,16 @@ public class FreePlaceFragment extends Fragment implements OnMapReadyCallback, S
         cashPay = (ImageView) view.findViewById(R.id.free_place_cash);
         coinsPay = (ImageView) view.findViewById(R.id.free_place_coins);
 
+        loadingContainer = (RelativeLayout) view.findViewById(R.id.loadingContainer);
+
         map = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.free_place_map);
         map.getMapAsync(this);
 
         showPanel(false);
+
+        loadingContainer.setVisibility(VISIBLE);
+
         return view;
     }
 
@@ -102,6 +111,7 @@ public class FreePlaceFragment extends Fragment implements OnMapReadyCallback, S
         }
 
         return (SupportMapFragment) fm.findFragmentById(R.id.free_place_map);
+
     }
 
 
@@ -125,6 +135,8 @@ public class FreePlaceFragment extends Fragment implements OnMapReadyCallback, S
 
 
         ClosedParking.getCloseParkingList(EntityList.closedParkingList, this, getActivity());
+
+
     }
 
     private void addMarkerList(ArrayList<ClosedParking> closedParkingArrayList){
@@ -137,7 +149,10 @@ public class FreePlaceFragment extends Fragment implements OnMapReadyCallback, S
             closedParkingMarkerList.add(googleMap.addMarker(marker));
 
 
+
+
         }
+        loadingContainer.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -175,22 +190,22 @@ public class FreePlaceFragment extends Fragment implements OnMapReadyCallback, S
             if(closedParking.isPrivatePark()==false){
                 privateParking.setVisibility(View.GONE);
             } else {
-                privateParking.setVisibility(View.VISIBLE);
+                privateParking.setVisibility(VISIBLE);
             }
             if(closedParking.isCard()==false){
                 cardPay.setVisibility(View.GONE);
             } else {
-                cardPay.setVisibility(View.VISIBLE);
+                cardPay.setVisibility(VISIBLE);
             }
             if(closedParking.isCash()==false){
                 cashPay.setVisibility(View.GONE);
             } else {
-                cashPay.setVisibility(View.VISIBLE);
+                cashPay.setVisibility(VISIBLE);
             }
             if(closedParking.isCoins()==false){
                 coinsPay.setVisibility(View.GONE);
             } else {
-                coinsPay.setVisibility(View.VISIBLE);
+                coinsPay.setVisibility(VISIBLE);
             }
         }
         showPanel(true);
@@ -200,7 +215,7 @@ public class FreePlaceFragment extends Fragment implements OnMapReadyCallback, S
     public void showPanel(boolean show){
         if(show==true){
             slidingPaneLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-            slidingFab.setVisibility(View.VISIBLE);
+            slidingFab.setVisibility(VISIBLE);
         } else {
             slidingPaneLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
             slidingFab.setVisibility(View.GONE);
