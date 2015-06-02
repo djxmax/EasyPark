@@ -19,6 +19,11 @@ import java.io.IOException;
  */
 public class ConnectionUtils {
 
+    /**
+     * test si la connexion à internet est valide
+     * @param context
+     * @return
+     */
     public static boolean isOnline(Context context) {
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -26,19 +31,25 @@ public class ConnectionUtils {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
+    /**
+     * execute la requette http
+     * @param url
+     * @param context
+     * @return
+     */
     public static String dataGet(String url, Context context){
         if(isOnline(context)==true) {
             HttpUriRequest request = new HttpGet(url);
             HttpClient httpclient = new DefaultHttpClient();
             HttpResponse response = null;
-            //requet
+            //requette
             try {
                 response = httpclient.execute(request);
             } catch (IOException e) {
                 e.printStackTrace();
             }
             String result = null;
-            //result
+            //resultat
             try {
                 result = EntityUtils.toString(response.getEntity());
             } catch (IOException e) {

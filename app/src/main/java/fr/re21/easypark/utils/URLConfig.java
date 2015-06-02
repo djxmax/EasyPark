@@ -2,6 +2,7 @@ package fr.re21.easypark.utils;
 
 /**
  * Created by maxime on 19/05/15.
+ * stock les URL importantes (ici l'apelle des parking fermé pour la démo)
  */
 public class URLConfig {
 

@@ -42,6 +42,7 @@ public class MyPlaceFragment extends Fragment implements View.OnClickListener, O
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //identification des élements
         View view = inflater.inflate(R.layout.fragment_my_place,container, false);
 
         slidingPaneLayout = (SlidingUpPanelLayout) view.findViewById(R.id.my_place_sliding_layout);
@@ -60,21 +61,27 @@ public class MyPlaceFragment extends Fragment implements View.OnClickListener, O
                 .findFragmentById(R.id.my_place_map);
         map.getMapAsync(this);
 
+        //cache le sliding panel
         showPanel(false);
         return view;
     }
 
+    /**
+     * detection des cliques
+     * @param view
+     */
     @Override
     public void onClick(View view) {
-        if(view.equals(positionFab) && googleMap!=null){
+        if(view.equals(positionFab) && googleMap!=null){//bouton affichage de la position
+            //recupère la position et bouge la carte sur celle ci
             double lat = googleMap.getMyLocation().getLatitude();
             double lng = googleMap.getMyLocation().getLongitude();
             CameraUpdate center=
                     CameraUpdateFactory.newLatLng(new LatLng(lat,
                             lng));
             googleMap.animateCamera(center);
-        } else if(view.equals(slidingFab)){
-
+        } else if(view.equals(slidingFab)){//bouton de lancement du guidage par voiture
+            //lance l'intent de guidage piéton via google map
             Uri gmmIntentUri = Uri.parse("google.navigation:q="+lat+","+lng+"&mode=w");
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
             mapIntent.setPackage("com.google.android.apps.maps");
@@ -83,26 +90,33 @@ public class MyPlaceFragment extends Fragment implements View.OnClickListener, O
         }
     }
 
+    /**
+     * init la carte lorsque qu'elle apparait
+     * @param googleMap
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         showPanel(false);
         this.googleMap=googleMap;
+        //reglage des param dela carte
         googleMap.setMyLocationEnabled(true);
         googleMap.setOnMarkerClickListener(this);
         googleMap.setOnMapClickListener(this);
         googleMap.getUiSettings().setMapToolbarEnabled(false);
         googleMap.getUiSettings().setMyLocationButtonEnabled(false);
 
+        //centre la carte sur la plce de la voiture
         CameraPosition cameraPosition = new CameraPosition.Builder().target(
                 new LatLng(lat, lng)).zoom(18).build();
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
+        //ajoute le marker de la place
         MarkerOptions marker = new MarkerOptions()
                 .position(new LatLng(lat, lng))
                 .title("Ma Place")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         googleMap.addMarker(marker);
 
+        //ajoute les info au sliding panel
         slidingTitle.setText("Ma place");
         slidingPlace.setText("10 minutes restantes");
         slidingAddr.setText("25 rue Emile Zola, 10000 Troyes");
@@ -110,25 +124,38 @@ public class MyPlaceFragment extends Fragment implements View.OnClickListener, O
         slidingContainer.setBackgroundResource(R.color.minute_stop_dark);
         slidingFab.setColorNormalResId(R.color.minute_stop_light);
         slidingFab.setColorPressedResId(R.color.minute_stop_dark);
+        //affiche le sliding panel
         showPanel(true);
     }
 
+    /**
+     * affiche ou cache le sliding panel
+     * @param show
+     */
     public void showPanel(boolean show){
-        if(show==true){
+        if(show==true){//affiche
             slidingPaneLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
             slidingFab.setVisibility(View.VISIBLE);
-        } else {
+        } else {//cache
             slidingPaneLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
             slidingFab.setVisibility(View.GONE);
         }
     }
 
+    /**
+     * detect un clique sur le marker et affiche le panel
+     * @param marker
+     */
     @Override
     public boolean onMarkerClick(Marker marker) {
         showPanel(true);
         return false;
     }
 
+    /**
+     * detect un clique sur la carte et cache le panel
+     * @param latLng
+     */
     @Override
     public void onMapClick(LatLng latLng) {
         showPanel(false);

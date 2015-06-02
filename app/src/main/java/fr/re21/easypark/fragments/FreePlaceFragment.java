@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.google.android.gms.maps.CameraUpdate;
@@ -62,6 +63,8 @@ public class FreePlaceFragment extends Fragment implements OnMapReadyCallback, S
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        //identification des elements
         View view = inflater.inflate(R.layout.fragment_free_place,container, false);
 
         slidingPaneLayout = (SlidingUpPanelLayout) view.findViewById(R.id.free_place_sliding_layout);
@@ -88,89 +91,110 @@ public class FreePlaceFragment extends Fragment implements OnMapReadyCallback, S
                 .findFragmentById(R.id.free_place_map);
         map.getMapAsync(this);
 
+        //init de la liste
+        closedParkingMarkerList = new ArrayList<>();
+        //cache le sliding panel
         showPanel(false);
-
-        loadingContainer.setVisibility(VISIBLE);
 
         return view;
     }
 
-    //en cas de debug sur version <Lollipop
-    private SupportMapFragment getMapFragment() {
-        FragmentManager fm = null;
 
-        //Log.d(TAG, "sdk: " + Build.VERSION.SDK_INT);
-        //Log.d(TAG, "release: " + Build.VERSION.RELEASE);
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            //Log.d(TAG, "using getFragmentManager");
-            fm = getFragmentManager();
-        } else {
-            //Log.d(TAG, "using getChildFragmentManager");
-            fm = getChildFragmentManager();
-        }
-
-        return (SupportMapFragment) fm.findFragmentById(R.id.free_place_map);
-
-    }
-
-
+    /**
+     * init la carte lorsque qu'elle apparait
+     * @param googleMap
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         showPanel(false);
         this.googleMap=googleMap;
+        //reglage des param dela carte
         googleMap.setMyLocationEnabled(true);
         googleMap.setOnMarkerClickListener(this);
         googleMap.setOnMapClickListener(this);
         googleMap.getUiSettings().setMapToolbarEnabled(false);
         googleMap.getUiSettings().setMyLocationButtonEnabled(false);
 
+        //position de la carte sur le centre de Troyes
         CameraPosition cameraPosition = new CameraPosition.Builder().target(
                 new LatLng(lat, lng)).zoom(8).build();
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         CameraUpdate zoom=CameraUpdateFactory.zoomTo(14);
         googleMap.animateCamera(zoom);
 
-
-
-
-        ClosedParking.getCloseParkingList(EntityList.closedParkingList, this, getActivity());
-
-
+        loadInfo();
     }
 
+    /**
+     * charge les info depuis le serveur
+     */
+    public void loadInfo(){
+        //vide la carte et la liste
+        closedParkingMarkerList.clear();
+        googleMap.clear();
+        //cahce le sliding panel
+        showPanel(false);
+        //fait la requette
+        ClosedParking.getCloseParkingList(EntityList.closedParkingList, this, getActivity());
+        //affiche la progresse bar
+        loadingContainer.setVisibility(VISIBLE);
+    }
+
+    /**
+     * ajoute les marker à la carte
+     * @param closedParkingArrayList
+     */
     private void addMarkerList(ArrayList<ClosedParking> closedParkingArrayList){
-        closedParkingMarkerList = new ArrayList<>();
+        //chaque marker est stocker dans la liste
         for(ClosedParking parking : closedParkingArrayList){
+            //creation du marker
             MarkerOptions marker = new MarkerOptions()
                     .position(new LatLng(parking.getLatitude(), parking.getLongitude()))
                     .title(parking.getName())
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
             closedParkingMarkerList.add(googleMap.addMarker(marker));
-
-
-
-
         }
-        loadingContainer.setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * appelé lorsque la requette de donnée a réussi
+     * @param method
+     * @param type
+     */
     @Override
     public void onEventCompleted(int method, String type) {
+        //cache la progress bar
+        loadingContainer.setVisibility(View.INVISIBLE);
         if(method==ClosedParking.GET && type==ClosedParking.TYPE){
+            //ajoute les marker
             addMarkerList(EntityList.closedParkingList);
         }
     }
 
+    /**
+     * appelé lorsque la requette de donnée a raté
+     * @param method
+     * @param type
+     */
     @Override
     public void onEventFailed(int method, String type) {
+        //cache la progress bar
+        loadingContainer.setVisibility(View.INVISIBLE);
+        //affiche un message d'erreur
+        Toast.makeText(getActivity(), R.string.loading_error, Toast.LENGTH_LONG).show();
 
     }
 
+    /**
+     * lorsque l'on clique sur un marker
+     * @param marker
+     * @return
+     */
     @Override
     public boolean onMarkerClick(Marker marker) {
 
         closedParking = null;
+        //identification du marker avec la liste des parking
         for(ClosedParking parking : EntityList.closedParkingList){
             if(parking.getName().equals(marker.getTitle())){
                 closedParking=parking;
@@ -179,6 +203,7 @@ public class FreePlaceFragment extends Fragment implements OnMapReadyCallback, S
             }
         }
         if(closedParking!=null){
+            //change les info du sliding panel
             slidingContainer.setBackgroundResource(R.color.closed_parking_dark);
             slidingFab.setColorNormalResId(R.color.closed_parking_light);
             slidingFab.setColorPressedResId(R.color.closed_parking_dark);
@@ -208,36 +233,51 @@ public class FreePlaceFragment extends Fragment implements OnMapReadyCallback, S
                 coinsPay.setVisibility(VISIBLE);
             }
         }
+        //affiche le panel
         showPanel(true);
         return false;
     }
 
+    /**
+     * affiche ou cache le sliding panel
+     * @param show
+     */
     public void showPanel(boolean show){
-        if(show==true){
+        if(show==true){//affiche
             slidingPaneLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
             slidingFab.setVisibility(VISIBLE);
-        } else {
+        } else {//cache
             slidingPaneLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
             slidingFab.setVisibility(View.GONE);
         }
     }
 
+    /**
+     * detect un clique sur la carte et cache le panel
+     * @param latLng
+     */
     @Override
     public void onMapClick(LatLng latLng) {
         showPanel(false);
     }
 
+    /**
+     * detect les clique sur les boutons
+     * @param view
+     */
     @Override
     public void onClick(View view) {
-        if(view.equals(positionFab) && googleMap!=null){
+        if(view.equals(positionFab) && googleMap!=null){//bouton affichage de la position
+            //recupère la position et bouge la carte sur celle ci
             double lat = googleMap.getMyLocation().getLatitude();
             double lng = googleMap.getMyLocation().getLongitude();
             CameraUpdate center=
                     CameraUpdateFactory.newLatLng(new LatLng(lat,
                             lng));
             googleMap.animateCamera(center);
-        } else if(view.equals(slidingFab)){
+        } else if(view.equals(slidingFab)){//bouton de lancement du guidage
             if(closedParking!=null){
+                //lance l'intent de guidage voiture via google map
                 Uri gmmIntentUri = Uri.parse("google.navigation:q="+closedParking.getLatitude()+","+closedParking.getLongitude());
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");

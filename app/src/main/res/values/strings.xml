@@ -20,6 +20,7 @@
     <string name="free_place_private">Parking Privé</string>
 
     <string name="loading">Chargement en cours</string>
+    <string name="loading_error">Erreur de chargement. Il semblerait que vous ayez des problèmes de connexion à Internet</string>
 
 
 </resources>

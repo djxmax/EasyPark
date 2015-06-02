@@ -15,6 +15,7 @@ import fr.re21.easypark.utils.URLConfig;
 
 /**
  * Created by maxime on 19/05/15.
+ * Objet parking fermé. Contient toutes les info du parking
  */
 public class ClosedParking {
 
@@ -160,6 +161,13 @@ public class ClosedParking {
         this.privatePark = privatePark;
     }
 
+    /**
+     * lance la requette serveur
+     * @param closedParkingList
+     * @param sri
+     * @param context
+     * @return
+     */
     public static SyncData getCloseParkingList(ArrayList<ClosedParking> closedParkingList, ServerResponseInterface sri, Context context) {
         System.out.println("get close parking list");
         SyncData syncData = new SyncData(GET, closedParkingList, URLConfig.closedParkingURL, sri, context);
@@ -167,6 +175,9 @@ public class ClosedParking {
         return syncData;
     }
 
+    /**
+     * Thread de requette serveur
+     */
     public static class SyncData extends AsyncTask<Void, Void, Boolean> {
 
         private int type;
@@ -177,6 +188,14 @@ public class ClosedParking {
         private ServerResponseInterface sri;
         private Context context=null;
 
+        /**
+         * constructeur des variables
+         * @param type
+         * @param closedParkingList
+         * @param url
+         * @param sri
+         * @param context
+         */
         public SyncData(int type, ArrayList<ClosedParking> closedParkingList, String url, ServerResponseInterface sri ,Context context) {
             super();
             this.type = type;
@@ -191,13 +210,19 @@ public class ClosedParking {
         @Override
         protected void onPreExecute() {}
 
+        /**
+         * fait la requette
+         * @param params
+         * @return
+         */
         @Override
         protected Boolean doInBackground(Void... params) {
             if (type == GET) {
-                result = ConnectionUtils.dataGet(url, context);
-                if(result!=null){
+                result = ConnectionUtils.dataGet(url, context);//requette
+                //gestion du resultat
+                if(result!=null){//reussi
                     return true;
-                } else {
+                } else {//raté
                     return false;
                 }
             } else {
@@ -205,33 +230,48 @@ public class ClosedParking {
             }
         }
 
+        /**
+         * traite la réponse
+         * @param success
+         */
         @Override
         protected void onPostExecute(final Boolean success) {
 
             if(type==GET){
                 System.out.println(result);
                 try {
-                    jsonResult = new JSONArray(result);
+                    if(success==true) {
+                        jsonResult = new JSONArray(result);//traitement du JSON, generation des objets
+                    } else {//appelle de la fonction d'échec
+                        sri.onEventFailed(GET,TYPE);
+                        return;
+                    }
                 } catch (JSONException e1) {
                     e1.printStackTrace();
                 }
 
+                //stock les informations
                 closedParkingList = closedParkingListJsonParse(jsonResult);
                 EntityList.closedParkingList=closedParkingList;
 
-                if(sri != null) {
+                if(sri != null) {//appelle de la fonction de réussite
                     sri.onEventCompleted(GET, TYPE);
                 }
             }
         }
     }
 
+    /**
+     * divise le json en différents parking
+     * @param jsonResult
+     * @return
+     */
     public static ArrayList<ClosedParking> closedParkingListJsonParse(JSONArray jsonResult) {
         ArrayList<ClosedParking> clientList = new ArrayList<>();
         try {
 
             for (int i = 0; i < jsonResult.length(); i++) {
-                JSONObject jsonClosedParking = jsonResult.getJSONObject(i);
+                JSONObject jsonClosedParking = jsonResult.getJSONObject(i);//traitement du json
                 clientList.add(closedParkingJsonParse(jsonClosedParking));
             }
             return clientList;
@@ -241,6 +281,12 @@ public class ClosedParking {
         }
     }
 
+    /**
+     * transfrme le json d'un parking en objet
+     * @param jsonPark
+     * @return
+     * @throws JSONException
+     */
     public static ClosedParking closedParkingJsonParse(JSONObject jsonPark)
             throws JSONException {
         ClosedParking closedParking = new ClosedParking();

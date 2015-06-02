@@ -29,6 +29,7 @@ public class PoliceFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //identification des élements
         View view = inflater.inflate(R.layout.fragment_police,container, false);
 
         map = (SupportMapFragment) getChildFragmentManager()
@@ -37,21 +38,29 @@ public class PoliceFragment extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
+    /**
+     * init la carte lorsque qu'elle apparait
+     * @param googleMap
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap=googleMap;
         googleMap.setMyLocationEnabled(true);
-
+        //reglage de la map
         googleMap.getUiSettings().setMapToolbarEnabled(false);
         googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-
+        //centre la map sur un point (démo)
         CameraPosition cameraPosition = new CameraPosition.Builder().target(
                 new LatLng(lat, lng)).zoom(16).build();
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         drawCircle();
     }
 
+    /**
+     * trace des cercle de 50m sur la map (démo)
+     */
     private void drawCircle(){
+        //création des cercle
         CircleOptions circleOptions = new CircleOptions()
                 .center(new LatLng(lat, lng))   //set center
                 .radius(50)   //set radius in meters
@@ -74,6 +83,7 @@ public class PoliceFragment extends Fragment implements OnMapReadyCallback {
                 .strokeColor(getResources().getColor(R.color.circle_stroke3))
                 .strokeWidth(5);
 
+        //ajout des cercles
         googleMap.addCircle(circleOptions);
         googleMap.addCircle(circleOptions2);
         googleMap.addCircle(circleOptions3);
