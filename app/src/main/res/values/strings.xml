@@ -8,7 +8,7 @@
     <string name="fragment_free_place">Places Libres</string>
     <string name="fragment_my_place">Ma place</string>
     <string name="fragment_police">Zones à risque</string>
-    <string name="fragment_police_seen">Signaler police !</string>
+    <string name="fragment_police_seen">Signaler la police !</string>
     <string name="dialog_police_seen">La police se trouve-t-elle dans cette zone ?</string>
     <string name="dialog_police_seen_YES">Oui</string>
     <string name="dialog_police_seen_NO">Non</string>
