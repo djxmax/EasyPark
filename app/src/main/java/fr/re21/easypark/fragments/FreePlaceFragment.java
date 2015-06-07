@@ -269,12 +269,17 @@ public class FreePlaceFragment extends Fragment implements OnMapReadyCallback, S
     public void onClick(View view) {
         if(view.equals(positionFab) && googleMap!=null){//bouton affichage de la position
             //recupère la position et bouge la carte sur celle ci
-            double lat = googleMap.getMyLocation().getLatitude();
-            double lng = googleMap.getMyLocation().getLongitude();
-            CameraUpdate center=
-                    CameraUpdateFactory.newLatLng(new LatLng(lat,
-                            lng));
-            googleMap.animateCamera(center);
+            if(googleMap.getMyLocation()!=null){
+                double lat = googleMap.getMyLocation().getLatitude();
+                double lng = googleMap.getMyLocation().getLongitude();
+                CameraUpdate center=
+                        CameraUpdateFactory.newLatLng(new LatLng(lat,
+                                lng));
+                googleMap.animateCamera(center);
+            } else {
+                Toast.makeText(getActivity(), R.string.location_error, Toast.LENGTH_LONG).show();
+            }
+
         } else if(view.equals(slidingFab)){//bouton de lancement du guidage
             if(closedParking!=null){
                 //lance l'intent de guidage voiture via google map

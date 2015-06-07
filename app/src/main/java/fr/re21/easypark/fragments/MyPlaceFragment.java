@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.google.android.gms.maps.CameraUpdate;
@@ -73,13 +74,17 @@ public class MyPlaceFragment extends Fragment implements View.OnClickListener, O
     @Override
     public void onClick(View view) {
         if(view.equals(positionFab) && googleMap!=null){//bouton affichage de la position
-            //recupère la position et bouge la carte sur celle ci
-            double lat = googleMap.getMyLocation().getLatitude();
-            double lng = googleMap.getMyLocation().getLongitude();
-            CameraUpdate center=
-                    CameraUpdateFactory.newLatLng(new LatLng(lat,
-                            lng));
-            googleMap.animateCamera(center);
+            if(googleMap.getMyLocation()!=null){
+                //recupère la position et bouge la carte sur celle ci
+                double lat = googleMap.getMyLocation().getLatitude();
+                double lng = googleMap.getMyLocation().getLongitude();
+                CameraUpdate center=
+                        CameraUpdateFactory.newLatLng(new LatLng(lat,
+                                lng));
+                googleMap.animateCamera(center);
+            } else {
+                Toast.makeText(getActivity(), R.string.location_error, Toast.LENGTH_LONG).show();
+            }
         } else if(view.equals(slidingFab)){//bouton de lancement du guidage par voiture
             //lance l'intent de guidage piéton via google map
             Uri gmmIntentUri = Uri.parse("google.navigation:q="+lat+","+lng+"&mode=w");
